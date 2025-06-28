@@ -1,0 +1,37 @@
+const mongoose = require('mongoose');
+
+const teacherSchema = new mongoose.Schema({
+  fullName: { type: String, required: true, trim: true },
+  gender: { type: String, required: true, enum: ['Male', 'Female', 'Other'] },
+  dateOfBirth: { type: Date, required: true },
+  bloodGroup: { type: String, trim: true },
+  religion: { type: String, trim: true },
+  nationality: { type: String, required: true, trim: true },
+  maritalStatus: { type: String, enum: ['Single', 'Married', 'Divorced', 'Widowed'] },
+  mobileNumber: { type: String, required: true, trim: true, match: [/^\d{10}$/, 'Mobile number must be 10 digits'] },
+  email: { type: String, required: true, trim: true, match: [/^[^\s@]+@[^\s@]+\.[^\s@]+$/, 'Invalid email format'] },
+  currentAddress: { type: String, required: true, trim: true },
+  permanentAddress: { type: String, trim: true },
+  emergencyContact: { type: String, trim: true },
+  highestQualification: { type: String, required: true, trim: true },
+  specialization: { type: String, trim: true },
+  certifications: { type: String, trim: true },
+  experience: { type: String, required: true, validate: { validator: (v) => !isNaN(Number(v)) && Number(v) >= 0, message: 'Experience must be a valid number' } },
+  teacherId: { type: String, required: true, trim: true, unique: true },
+  joiningDate: { type: Date, required: true },
+  department: { type: String, required: true, trim: true },
+  designation: { type: String, required: true, trim: true },
+  salary: { type: String, required: true, validate: { validator: (v) => !isNaN(Number(v)) && Number(v) >= 0, message: 'Salary must be a valid number' } },
+  employmentType: { type: String, required: true, enum: ['Full-Time', 'Part-Time', 'Contract'] },
+  status: { type: String, required: true, enum: ['Active', 'On Leave', 'Inactive'] },
+  username: { type: String, required: true, trim: true, unique: true },
+  password: { type: String, required: true, trim: true },
+  profilePhoto: { type: String, required: true },
+  resume: { type: String },
+  certificates: { type: String },
+  role: { type: String, default: 'Teacher' },
+  school: { type: mongoose.Schema.Types.ObjectId, ref: 'Admin', required: true },
+  createdAt: { type: Date, default: Date.now },
+});
+
+module.exports = mongoose.model('Teacher', teacherSchema);
